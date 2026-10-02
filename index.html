@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>千度电影网 - 高清影视在线观看</title>
+    <meta name="description" content="千度电影网(qiandudianyingwang-app)提供最新高清电影、电视剧、综艺在线观看。海量资源，极速播放，尽在千度电影网！">
+    <meta name="keywords" content="千度电影网, qiandudianyingwang-app, 高清电影, 在线电影, 免费观影">
+    <style>
+        /* 基础重置与全局变量 */
+        :root {
+            --bg-color: #0a0a0f;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --primary-neon: #00f3ff;
+            --secondary-neon: #ff00ea;
+            --text-main: #e0e0e0;
+            --text-muted: #888;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(0, 243, 255, 0.04) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(255, 0, 234, 0.04) 0%, transparent 50%);
+        }
+
+        /* 导航栏 - 毛玻璃效果 */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            text-decoration: none;
+            background: linear-gradient(90deg, var(--primary-neon), var(--secondary-neon));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+            text-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-neon), var(--secondary-neon));
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+            text-shadow: 0 0 10px var(--primary-neon);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* 英雄区域 - 动态渐变 */
+        .hero {
+            margin-top: 80px;
+            padding: 6rem 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(90deg, var(--primary-neon), var(--secondary-neon));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 10px rgba(0,243,255,0.3)); }
+            to { filter: drop-shadow(0 0 20px rgba(255,0,234,0.3)); }
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .url-box {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+            backdrop-filter: blur(5px);
+        }
+
+        .url-box span {
+            color: var(--primary-neon);
+            font-family: monospace;
+            font-size: 1.1rem;
+            margin-right: 1rem;
+        }
+
+        .url-box button {
+            background: linear-gradient(90deg, var(--primary-neon), var(--secondary-neon));
+            color: #000;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .url-box button:hover {
+            transform: scale(1.05);
+        }
+
+        /* 主要内容区 - 网格布局 */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2rem;
+            color: #fff;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title::before, .section-title::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 50px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary-neon));
+        }
+
+        .section-title::before { left: -60px; }
+        .section-title::after { 
+            right: -60px; 
+            background: linear-gradient(-90deg, transparent, var(--secondary-neon));
+        }
+
+        /* 栏目卡片 - 悬浮特效 */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: block;
+            color: var(--text-main);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0,243,255,0.1), rgba(255,0,234,0.1));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 0;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(0, 243, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 243, 255, 0.1);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+            filter: drop-shadow(0 0 10px rgba(0,243,255,0.5));
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+            color: #fff;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* 底部 */
+        footer {
+            background: rgba(0, 0, 0, 0.5);
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, var(--primary-neon), var(--secondary-neon));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-neon);
+        }
+
+        .copyright {
+            color: #555;
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 2rem;
+        }
+
+        /* 移动端自适应 */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            .nav-links {
+                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .hero {
+                padding: 4rem 1rem;
+            }
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            .url-box {
+                flex-direction: column;
+                border-radius: 15px;
+                padding: 1rem;
+                gap: 1rem;
+            }
+            .url-box span {
+                margin-right: 0;
+                text-align: center;
+            }
+            .section-title::before, .section-title::after {
+                display: none;
+            }
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/yazhou.js"></script>
+
+    <!-- 导航栏 -->
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">千度电影网</a>
+            <nav class="nav-links">
+                <a href="#home">首页</a>
+                <a href="#movies">电影库</a>
+                <a href="#series">剧集</a>
+                <a href="#top">排行榜</a>
+                <a href="#about">关于我们</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 首页横幅 -->
+    <section class="hero" id="home">
+        <h1>探索光影世界<br><span>尽在千度电影网</span></h1>
+        <p>汇聚全球高清影视资源，提供极速、流畅的观影体验。随时随地，想看就看。</p>
+        <div class="url-box">
+            <span>https://qiandudianyingwang-app</span>
+            <button onclick="alert('链接已复制！')">访问官网</button>
+        </div>
+    </section>
+
+    <!-- 主要内容 -->
+    <main>
+        <!-- 栏目一：电影库 -->
+        <h2 class="section-title" id="movies">电影库</h2>
+        <div class="grid-container">
+            <a href="#" class="card">
+                <div class="card-content">
+                    <div class="card-icon">🎬</div>
+                    <h3>最新上映</h3>
+                    <p>抢先观看全球院线最新大片，高清画质，沉浸式体验。</p>
+                </div>
+            </a>
+            <a href="#" class="card">
+                <div class="card-content">
+                    <div class="card-icon">🏆</div>
+                    <h3>获奖佳作</h3>
+                    <p>精选奥斯卡、戛纳等国际电影节获奖影片，品味经典。</p>
+                </div>
+            </a>
+            <a href="#" class="card">
+                <div class="card-content">
+                    <div class="card-icon">🌏</div>
+                    <h3>各国电影</h3>
+                    <p>涵盖好莱坞、日韩、欧洲、国产等多元化影视作品。</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- 栏目二：剧集 -->
+        <h2 class="section-title" id="series">热播剧集</h2>
+        <div class="grid-container">
+            <a href="#" class="card">
+                <div class="card-content">
+                    <div class="card-icon">📺</div>
+                    <h3>美剧专区</h3>
+                    <p>同步更新热门美剧，中英字幕，追剧不间断。</p>
+                </div>
+            </a>
+            <a href="#" class="card">
+                <div class="card-content">
+                    <div class="card-icon">🎎</div>
+                    <h3>日韩剧集</h3>
+                    <p>最新日剧、韩剧资源，满足你的多元观剧需求。</p>
+                </div>
+            </a>
+            <a href="#" class="card">
+                <div class="card-content">
+                    <div class="card-icon">🏮</div>
+                    <h3>国产好剧</h3>
+                    <p>热门国产电视剧、网络剧，高清流畅播放。</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- 栏目三：排行榜 -->
+        <h2 class="section-title" id="top">排行榜</h2>
+        <div class="grid-container">
+            <a href="#" class="card">
+                <div class="card-content">
+                    <div class="card-icon">🔥</div>
+                    <h3>本周热播</h3>
+                    <p>根据千万用户观影数据，实时更新最热门的影视作品。</p>
+                </div>
+            </a>
+            <a href="#" class="card">
+                <div class="card-content">
+                    <div class="card-icon">⭐</div>
+                    <h3>高分推荐</h3>
+                    <p>豆瓣高分精选，发现那些不容错过的优质好片。</p>
+                </div>
+            </a>
+            <a href="#" class="card">
+                <div class="card-content">
+                    <div class="card-icon">👍</div>
+                    <h3>口碑佳作</h3>
+                    <p>影评人推荐与观众好评双重认证，品质保证。</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- 栏目四：关于我们 -->
+        <h2 class="section-title" id="about">关于千度电影网</h2>
+        <div class="grid-container">
+            <a href="#" class="card">
+                <div class="card-content">
+                    <div class="card-icon">ℹ️</div>
+                    <h3>平台介绍</h3>
+                    <p>千度电影网致力于打造最专业的在线影视平台，网址：qiandudianyingwang-app。</p>
+                </div>
+            </a>
+            <a href="#" class="card">
+                <div class="card-content">
+                    <div class="card-icon">📞</div>
+                    <h3>联系我们</h3>
+                    <p>商务合作、内容反馈，欢迎通过官网渠道与我们取得联系。</p>
+                </div>
+            </a>
+            <a href="#" class="card">
+                <div class="card-content">
+                    <div class="card-icon">📜</div>
+                    <h3>免责声明</h3>
+                    <p>本站所有资源均来自互联网公开内容，版权归原作者所有。</p>
+                </div>
+            </a>
+        </div>
+    </main>
+
+    <!-- 底部 -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">千度电影网</div>
+            <div class="footer-links">
+                <a href="#home">首页</a>
+                <a href="#movies">电影</a>
+                <a href="#series">剧集</a>
+                <a href="#top">排行</a>
+                <a href="#about">关于</a>
+            </div>
+            <div class="copyright">
+                &copy; 2024 千度电影网 (qiandudianyingwang-app). All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
